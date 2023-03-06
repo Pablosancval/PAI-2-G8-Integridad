@@ -4,8 +4,9 @@ import java.net.*;
 import javax.net.ServerSocketFactory;
 
 public class LoginServerSocket {
-private static final String CORRECT_USER_NAME = "vgomezalv";
-private static final String CORRECT_PASSWORD = "H34arga$tenK";
+private static final String CORRECT_USER_NAME = "meh";
+private static final String CORRECT_PASSWORD = "1234";
+private static final String HELLO_MESSAGE = "hola";
 
 /**
 * @param args
@@ -38,9 +39,14 @@ private static final String CORRECT_PASSWORD = "H34arga$tenK";
                 PrintWriter output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
                 String userName = input.readLine();
                 String password = input.readLine();
+                String message = input.readLine();
 
                 if (userName.equals(CORRECT_USER_NAME) && password.equals(CORRECT_PASSWORD)){
-                    output.println("Welcome, " + userName);
+                    if(message.toLowerCase().equals(HELLO_MESSAGE)){
+                        output.println("Hello, " + userName);
+                    } else {
+                        output.println("Message was not a welcoming one >:(");
+                    }
                 } else {
                     output.println("Login Failed.");
                 }

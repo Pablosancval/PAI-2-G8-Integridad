@@ -41,6 +41,9 @@ public class LoginClient {
             // send password to server
 
             output.println(password);
+
+            String message = JOptionPane.showInputDialog(null,"Enter a message for the server:");
+            output.println(message);
             output.flush();
 
             // create BufferedReader for reading server response
