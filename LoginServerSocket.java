@@ -1,5 +1,3 @@
-package java;
-
 import java.io.*;
 import java.net.*;
 
@@ -8,6 +6,7 @@ import javax.net.ServerSocketFactory;
 public class LoginServerSocket {
 private static final String CORRECT_USER_NAME = "vgomezalv";
 private static final String CORRECT_PASSWORD = "H34arga$tenK";
+
 /**
 * @param args
 * @throws IOException

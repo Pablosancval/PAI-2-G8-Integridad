@@ -1,5 +1,3 @@
-package java;
-
 // Java core packages
 
 import java.io.*;
@@ -22,8 +20,7 @@ public class LoginClient {
 
             // create Socket from factory
 
-            Socket socket = (Socket) socketFactory.createSocket(
-            "localhost", 7070 );
+            Socket socket = (Socket) socketFactory.createSocket("localhost", 7070);
 
             // create PrintWriter for sending login to server
 
