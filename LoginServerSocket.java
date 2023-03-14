@@ -4,6 +4,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.net.ServerSocketFactory;
 
@@ -27,6 +29,7 @@ private static final String HELLO_MESSAGE = "hola";
     ServerSocketFactory.getDefault();
 
     String secretKey = "mysecretkey";
+    ArrayList noncesRegistrados = new ArrayList<>();
     // create Socket from factory
     
     ServerSocket serverSocket = (ServerSocket)
@@ -68,11 +71,20 @@ private static final String HELLO_MESSAGE = "hola";
     
                 System.out.println("HMAC-SHA256: " + hmacSha256String);
 
-                if (hmacSha256String != hmacSha256StringServer){
+                String[] parts = message.split(",");
+                String cleanMessage = parts[0];
+                String nonce = parts[1];
+
+
+                if (!Objects.equals(hmacSha256String, hmacSha256StringServer)){
                     output.println("fallo de integridad, intentelo de nuevo");
+
+                } else if(noncesRegistrados.contains(nonce)){
+                    output.println("este mensaje ha sido repetido >:(");
+
                 } else {
                     if (userName.equals(CORRECT_USER_NAME) && password.equals(CORRECT_PASSWORD)){
-                        if(message.toLowerCase().equals(HELLO_MESSAGE)){
+                        if(cleanMessage.toLowerCase().equals(HELLO_MESSAGE)){
                             output.println("Hello, " + userName);
                         } else {
                             output.println("Message was not a welcoming one >:(");

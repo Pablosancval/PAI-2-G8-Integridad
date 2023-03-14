@@ -6,6 +6,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 
 import javax.net.SocketFactory;
 
@@ -49,7 +50,10 @@ public class LoginClient {
             output.println(password);
 
             String message = JOptionPane.showInputDialog(null,"Enter a message for the server:");
+            
+            String nonce = LocalDateTime.now().toString();
 
+            message = message + "," + nonce;
 
             byte[] secretKeyBytes = secretKey.getBytes();
             byte[] messageBytes = message.getBytes();
