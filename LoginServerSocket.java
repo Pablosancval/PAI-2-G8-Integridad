@@ -77,10 +77,10 @@ private static final String HELLO_MESSAGE = "hola";
 
 
                 if (!Objects.equals(hmacSha256String, hmacSha256StringServer)){
-                    output.println("fallo de integridad, intentelo de nuevo");
+                    output.println("Integrity failure, try again");
 
                 } else if(noncesRegistrados.contains(nonce)){
-                    output.println("este mensaje ha sido repetido >:(");
+                    output.println("This message has appeared before >:(");
 
                 } else {
                     if (userName.equals(CORRECT_USER_NAME) && password.equals(CORRECT_PASSWORD)){
