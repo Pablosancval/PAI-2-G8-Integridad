@@ -2,6 +2,10 @@
 
 import java.io.*;
 import java.net.*;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.net.SocketFactory;
 
@@ -9,7 +13,9 @@ import javax.net.SocketFactory;
 import javax.swing.*;
 public class LoginClient {
 // LoginClient constructor
-    public LoginClient(){
+    public LoginClient() throws NoSuchAlgorithmException, InvalidKeyException {
+
+        String secretKey = "mysecretkey";
 
         // open Socket connection to server and send login
 
@@ -43,7 +49,30 @@ public class LoginClient {
             output.println(password);
 
             String message = JOptionPane.showInputDialog(null,"Enter a message for the server:");
+
+
+            byte[] secretKeyBytes = secretKey.getBytes();
+            byte[] messageBytes = message.getBytes();
+    
+            // Create HMAC-SHA256 hash function instance
+            Mac hmacSha256 = Mac.getInstance("HmacSHA256");
+
+            // Create secret key spec
+            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeyBytes, "HmacSHA256");
+
+            // Initialize the HMAC with the secret key
+            hmacSha256.init(secretKeySpec);
+
+            // Generate the HMAC hash
+            byte[] hmacSha256Bytes = hmacSha256.doFinal(messageBytes);
+
+            // Convert the hash to a string for transmission
+            String hmacSha256String = bytesToHex(hmacSha256Bytes);
+
+            System.out.println("HMAC-SHA256: " + hmacSha256String);
+
             output.println(message);
+            output.println(hmacSha256String);
             output.flush();
 
             // create BufferedReader for reading server response
@@ -76,8 +105,21 @@ public class LoginClient {
         }
     } // end LoginClient constructor
 
+    private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int v = bytes[i] & 0xFF;
+            hexChars[i * 2] = HEX_ARRAY[v >>> 4];
+            hexChars[i * 2 + 1] = HEX_ARRAY[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+
     // execute application
-    public static void main(String args[]){
+    public static void main(String args[]) throws InvalidKeyException, NoSuchAlgorithmException{
         new LoginClient();
     }
 }
