@@ -94,6 +94,8 @@ private static final String HELLO_MESSAGE = "hola";
                     }
                 }
 
+                noncesRegistrados.add(nonce);
+
                 output.close();
                 input.close();
                 socket.close();
